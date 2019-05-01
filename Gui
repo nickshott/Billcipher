@@ -1,0 +1,58 @@
+from tkinter import *
+
+raiz = Tk()
+
+miFrame = Frame()
+
+raiz.title("ENCRIPTADOR DE TEXTO")
+
+raiz.geometry("450x405")
+
+raiz.config(bg="lightgrey")
+
+raiz.resizable(0,0) 
+
+miFrame.pack()
+
+miFrame.config(bd=3)
+miFrame.config(relief="raised")
+miFrame.config(bg="grey")
+miFrame.config(width="250", height="150") 
+miFrame.config(cursor="hand2")
+
+
+miLabel = Label(miFrame, text="Texto a encriptar:", fg="white", font=("Courier New",12), bg="grey")
+#miLabel.config(bg="none")
+miLabel.grid(row=0, column=1, sticky="w", padx=5)
+
+
+TextoAEncriptar=Text(miFrame, width=40, height=8, font=("Courier New",12))
+TextoAEncriptar.grid(row=1, column=1)
+TextoAEncriptar.config(yscrollcommand=scrollVert.set)
+
+"""scrollVert=Scrollbar(miFrame, command=TextoAEncriptar.yview)
+scrollVert.config()
+scrollVert.grid(row=1, column=2, sticky="nsew")"""
+
+miLabel2 = Label(miFrame, text="Texto encriptado:", fg="white", font=("Courier New",12), bg="grey")
+#miLabel.config(bg="none")
+miLabel2.grid(row=2, column=1, sticky="w", padx=5)
+
+
+TextoAEncriptar2=Text(miFrame, width=40, height=8, font=("Courier New",12))
+TextoAEncriptar2.grid(row=3, column=1)
+TextoAEncriptar2.config(yscrollcommand=scrollVert.set)
+
+""""scrollVert2=Scrollbar(miFrame, command=TextoAEncriptar2.yview)
+scrollVert2.config()
+scrollVert2.grid(row=3, column=2, sticky="nsew")"""
+
+boton1 = Button(raiz, text="Encriptar",command= lambda: Mi_funcion(TextoAEncriptar.get()))
+boton1.config(cursor="hand2")
+boton1.place(x="25", y="370")
+
+boton2 = Button(raiz, text="Decriptar",command= lambda: Mi_funcion(TextoAEncriptar.get()))
+boton2.config(cursor="hand2")
+boton2.place(x="130", y="370")
+
+raiz.mainloop()
