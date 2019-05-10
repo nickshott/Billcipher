@@ -1,0 +1,44 @@
+from cipher import *
+
+letrasm = "abcdefghijklmñnopqrstuvwxyz"
+LETRASM = letrasm.upper()
+letras = letrasm + LETRASM
+e = 2533
+
+def encriptar(msg, ticker, e):
+    """Función general para encriptar"""
+    csrmsg = enccsr(msg, ticker)
+    binmsg = ""
+    binmsg2 = ""
+    nummsg = []
+    for caracter in csrmsg:
+        if caracter != "_":
+            binmsg += encbin(caracter)
+        else:
+            binmsg += " "
+    contador = 0
+    while contador < len(binmsg):
+        binario = binmsg[contador: contador + 6]
+        while binario[0] == " ":
+            contador += 1
+            binario = binmsg[contador: contador + 6]
+            binmsg2 += " "
+        binmsg2 += bininv(binario)
+        contador += 6
+    contador = 0
+    while  contador < len(binmsg2):
+        subcontador = 0
+        num = 0
+        if binmsg2[contador] == " ":
+            nummsg.append(binmsg2[contador])
+            contador += 1
+        else:
+            while subcontador < 6:
+                num += (int(binmsg2[contador]) * (2 ** subcontador))
+                subcontador += 1
+                contador += 1
+                if contador == len(binmsg2):
+                    break
+            nummsg.append(num)
+    encmsg = encasm(nummsg, e)
+    return encmsg
