@@ -1,8 +1,8 @@
 letrasm = "abcdefghijklmñnopqrstuvwxyz"
 LETRASM = letrasm.upper()
 letras = letrasm + LETRASM
-e = 16383605
-d = 747759581
+e = 2533
+d = 6285
 
 
 def encbin(msg):
@@ -51,7 +51,7 @@ def enccsr(msg, clave):
         else:
             indCsr = letras.index(caracter) + letras.index(clave[
                                                                contador]) + 1  # Cambia la letra según el valor del indice del contador, se agrega 1 para evitar el 0
-            if indCsr == limit:
+            while indCsr >= limit:
                 indCsr -= limit  # Si el indice es mayor a lo posible se repite
             nmsg += letras[indCsr]
             contador += 1
@@ -82,55 +82,61 @@ def encasm (msg, llv):
     """Función de encriptación asimetrica
         """
     nmsg = []
-    for caracter in msg:
-        if caracter == " ":
-            nmsg.append(caracter)
-        else:
-            numcar = letras.index(caracter)
-            nnum = (numcar * llv) % 2070449999
-            nmsg.append(nnum)
-    return nmsg
+    if type(msg) == str:
+        for caracter in msg:
+            if caracter == " ":
+                nmsg.append(caracter)
+            else:
+                numcar = letras.index(caracter)
+                nnum = (numcar ** llv) % 16501
+                nmsg.append(nnum)
+        return nmsg
+    else:
+        for elemento in msg:
+            if elemento == " ":
+                nmsg.append(elemento)
+            else:
+                nnum = (elemento ** llv) % 16501
+                nmsg.append(nnum)            
+        return nmsg
 
 
 def dscasm(msg, llv):
     """Función de desencriptación asimetrica
             """
-    nmsg = ""
+    nmsg = []
     for elemento in msg:
         if type(elemento) == str:
-            nmsg += elemento
+            nmsg.append(nnum)
         else:
-            nnum = (elemento * llv) % 2070449999
-            nmsg += "{0}".format(letras[nnum])
+            nnum = (elemento ** llv) % 16501
+            nmsg.append(nnum)
     return nmsg
 
-def bininv(bin):
+
+def bininv(binario):
     '''Función para hallar la inversa de binarios '''
     nbin = ""
-    carry = "0"
+    carry = "1"
     fbin = ""
-    for digito in bin:
+    counter = 0
+    for digito in binario:
         if digito == "1":
             nbin = "0" + nbin
         else:
             nbin = "1" + nbin
-    if nbin[0] == "0":
-        fbin = "1"
-        for posicion in range(len(nbin) - 1):
-            fbin = nbin[posicion + 1] + fbin
-    else:
-        carry = 1
-        fbin = "0"
-        counter = 1
-        while carry == 1:
-            if nbin[counter] == "1":
+    while counter < len(nbin):
+        if nbin[counter] == "0":
+            if carry == "1":
+                fbin = "1" + fbin
+                carry = "0"
+            else:
                 fbin = "0" + fbin
-                if counter == len(nbin) - 1:
-                    carry = 0
+        else:
+            if carry == "1":
+                fbin = "0" + fbin
+                carry = "1"
             else:
                 fbin = "1" + fbin
-                carry = 0
-            counter += 1
-        for posicion in range(len(nbin) - counter):
-            fbin = nbin[counter] + fbin
+        counter += 1
     return fbin
