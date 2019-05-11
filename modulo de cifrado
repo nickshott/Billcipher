@@ -107,7 +107,7 @@ def dscasm(msg, llv):
     nmsg = []
     for elemento in msg:
         if type(elemento) == str:
-            nmsg.append(nnum)
+            nmsg.append(elemento)
         else:
             nnum = (elemento ** llv) % 16501
             nmsg.append(nnum)
