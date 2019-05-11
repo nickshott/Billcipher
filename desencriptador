@@ -9,30 +9,45 @@ def desencriptar(msg, ticker, d):
     nummsg = dscasm(msg, d)
     binmsg = ""
     binmsg2 = ""
-    contador = 0
     precsr = ""
+    dscmsg = ""
+    contador = 0
     for elemento in nummsg:
-        contador += 1
-        numero = elemento
-        binario = ""
-        for potencia in range(6):
-            if numero >= (2**(5 - potencia)):
-                binario = "1" + binario
-                numero -= 2**(5- potencia)
-            else:
-                binario = "0" + binario
-        binmsg += binario
-    for elemento in range(len(nummsg)):      
-        binmsg2 += bininv(binmsg[elemento*6:(elemento + 1)*6])
+        if type(elemento) != str:
+            contador += 1
+            numero = elemento
+            binario = ""
+            for potencia in range(6):
+                if numero >= (2**(5 - potencia)):
+                    binario = "1" + binario
+                    numero -= 2**(5- potencia)
+                else:
+                    binario = "0" + binario
+            binmsg += binario
+        else:
+            binmsg += "_"
+    contador = 0
+    while contador < len(binmsg):
+        if binmsg[contador] == "_":
+            binmsg2 += "_"
+            contador += 1
+        else:
+            binmsg2 += bininv(binmsg[contador : contador + 6])
+            contador += 6
     contador = 0
     while  contador < len(binmsg2):
         subcontador = 5
         num = 0
-        while subcontador >= 0:
-            num += (int(binmsg2[contador]) * (2 ** subcontador))
-            subcontador -= 1
+        if binmsg2[contador] == "_":
+            precsr += "_"
             contador += 1
-            if contador == len(binmsg2):
-                break
-        precsr += "{0}".format(letras[num])
-    return nummsg
+        else:
+            while subcontador >= 0:
+                num += (int(binmsg2[contador]) * (2 ** subcontador))
+                subcontador -= 1
+                contador += 1
+                if contador == len(binmsg2):
+                    break
+            precsr += "{0}".format(letras[num])
+    dscmsg += dsccsr(precsr, ticker)
+    return dscmsg
