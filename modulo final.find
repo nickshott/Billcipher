@@ -1,0 +1,142 @@
+letrasm = "abcdefghijklmñnopqrstuvwxyz"
+LETRASM = letrasm.upper()
+letras = letrasm + LETRASM
+e = 2533
+d = 6285
+
+
+def encbin(msg):
+    """Función de encriptación
+         en binario"""
+    nmsg = ""
+    for caracter in msg:
+        for letra in letras:
+            if caracter == letra:
+                binario = (bin(letras.find(caracter)))[2:len(letras)]  # Se halla el valor binario de la letra
+                nbin = binario.zfill(6)  # Se rellena el número hallado con ceros para mantener un formato de longitud 6
+                nmsg += nbin
+        if caracter == " ":  # remplazaremos los espacios en blanco por un guion bajo
+            nmsg += "_"
+    return nmsg
+
+
+def dscbin(msg):
+    """Función para desencriptar binario
+        """
+    contador = 0
+    nmsg = ""
+    while contador < len(msg):  # Ejecuta la función mientras existan letras por descifrar
+        binario = msg[contador: contador + 6]
+        if binario[0] == "_":
+            contador += 1
+            binario = msg[contador: contador + 6]
+            nmsg += " "  # Se agregan espacios y se saltan en el contador
+        for letra in letras:
+            binlet = (bin(letras.find(letra)))[2:len(letras)]
+            if binario == binlet.zfill(6):  # Se encuentra la letra que cumpla el valor binario según el formato
+                nmsg += letra
+        contador += 6
+    return nmsg
+
+
+def enccsr(msg, clave):
+    """Función de encriptar en cifrado césar
+        """
+    nmsg = ""
+    limit = len(letras)
+    contador = 0
+    for caracter in msg:
+        if caracter == " ":
+            nmsg += "_"
+        else:
+            indCsr = letras.find(caracter) + letras.find(clave[
+                                                               contador]) + 1  # Cambia la letra según el valor del indice del contador, se agrega 1 para evitar el 0
+            while indCsr >= limit:
+                indCsr -= limit  # Si el indice es mayor a lo posible se repite
+            nmsg += letras[indCsr]
+            contador += 1
+            if contador == len(clave):
+                contador = 0
+    return nmsg
+
+
+def dsccsr(msg, clave):
+    """Función de desencripar cifrado césar
+    """
+    nmsg = ""
+    contador = 0
+    for caracter in msg:
+        if caracter == "_":
+            nmsg += " "
+        else:
+            indCsr = letras.find(caracter) - letras.find(clave[
+                                                               contador]) - 1  # Cambia la letra según el valor del indice del contador, se resta 1 para evitar el 0
+            nmsg += letras[indCsr]
+            contador += 1
+            if contador == len(clave):
+                contador = 0
+    return nmsg
+
+
+def encasm (msg, llv):
+    """Función de encriptación asimetrica
+        """
+    nmsg = []
+    if type(msg) == str:
+        for caracter in msg:
+            if caracter == " ":
+                nmsg.append(caracter)
+            else:
+                numcar = letras.find(caracter)
+                nnum = (numcar ** llv) % 16501
+                nmsg.append(nnum)
+        return nmsg
+    else:
+        for elemento in msg:
+            if elemento == " ":
+                nmsg.append(elemento)
+            else:
+                nnum = (elemento ** llv) % 16501
+                nmsg.append(nnum)            
+        return nmsg
+
+
+def dscasm(msg, llv):
+    """Función de desencriptación asimetrica
+            """
+    nmsg = []
+    for elemento in msg:
+        if type(elemento) == str:
+            nmsg.append(elemento)
+        else:
+            nnum = (elemento ** llv) % 16501
+            nmsg.append(nnum)
+    return nmsg
+
+
+def bininv(binario):
+    '''Función para hallar la inversa de binarios '''
+    nbin = ""
+    carry = "1"
+    fbin = ""
+    counter = 0
+    for digito in binario:
+        if digito == "1":
+            nbin = "0" + nbin
+        else:
+            nbin = "1" + nbin
+    while counter < len(nbin):
+        if nbin[counter] == "0":
+            if carry == "1":
+                fbin = "1" + fbin
+                carry = "0"
+            else:
+                fbin = "0" + fbin
+        else:
+            if carry == "1":
+                fbin = "0" + fbin
+                carry = "1"
+            else:
+                fbin = "1" + fbin
+        counter += 1
+    return fbin
