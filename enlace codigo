@@ -1,110 +1,114 @@
 from tkinter import (Tk, Text, Button, Label, Menu,
                      END, INSERT, SEL_FIRST, SEL_LAST)
-from modulo import*
+from modulo import *
+
 letrasm = "abcdefghijklmñnopqrstuvwxyz"
 LETRASM = letrasm.upper()
 letras = letrasm + LETRASM
 d = 6285
 e = 2533
-ticker="whale" 
- 
+ticker = "whale"
+
+
 class GUI(Tk):
     "Interfaz Grafica..."
- 
+
     def __init__(self):
-        super(GUI,self).__init__()
+        super(GUI, self).__init__()
         self.geometry("400x300+350+80")
         self.title("Encriptador")
-        self.resizable(width=False,height=False)
- 
-        #Se establece un icono(si hay)...
+        self.resizable(width=False, height=False)
+
+        # Se establece un icono(si hay)...
         try:
             self.iconbitmap("icono.ico")
         except:
             pass
- 
-        #Cuadro de texto...
+
+        # Cuadro de texto...
         self.texto1 = Text(self, font=datos.fuente2)
-        self.texto1.place(x=0,y=30,width=400,height=218)
-        
-         #Cuadro de texto2...
+        self.texto1.place(x=0, y=30, width=400, height=218)
+
+        # Cuadro de texto2...
         self.texto2 = Text(self, font=datos.fuente2)
-        self.texto2.place(x=0,y=150,width=400,height=218)
- 
-        #Panel superior...
+        self.texto2.place(x=0, y=150, width=400, height=218)
+
+        # Panel superior...
         self.panel = Label(self,
                            text="Encriptar:",
                            bg="gray93",
                            font=datos.fuente2)
-        self.panel.place(x=0,y=0,width=300,height=30)
-        #Panel superior2...
+        self.panel.place(x=0, y=0, width=300, height=30)
+        # Panel superior2...
         self.panel1 = Label(self,
-                           text="Desencriptar",
-                           bg="gray93",
-                           font=datos.fuente2)
-        self.panel1.place(x=0,y=120,width=300,height=30)
- 
-        #Botones...
+                            text="Desencriptar",
+                            bg="gray93",
+                            font=datos.fuente2)
+        self.panel1.place(x=0, y=120, width=300, height=30)
+
+        # Botones...
         self.botones()
- 
-        #Menu desplegable...
+
+        # Menu desplegable...
         self.menu_desplegable()
- 
+
     def botones(self):
-        #Botones...
+        # Botones...
         boton_encriptar = Button(self,
                                  text="Encriptar",
                                  font=datos.fuente2,
                                  relief="flat",
-                                 command = lambda:funcion.boton1("encriptado"))
-                                 #Se usa lambda para poder pasar argumentos...
- 
+                                 command=lambda: funcion.boton1("encriptado"))
+        # Se usa lambda para poder pasar argumentos...
+
         boton_descriptar = Button(self,
                                   text="Descriptar",
                                   font=datos.fuente2,
                                   relief="flat",
-                                  command = lambda:funcion.boton2("descriptado"))
- 
-        #Se posicionan los botones...
-        boton_encriptar.place(x=0,y=248,width=150,height=52)
-        boton_descriptar.place(x=150,y=248,width=150,height=52)
- 
+                                  command=lambda: funcion.boton2("descriptado"))
+
+        # Se posicionan los botones...
+        boton_encriptar.place(x=0, y=248, width=150, height=52)
+        boton_descriptar.place(x=150, y=248, width=150, height=52)
+
     def menu_desplegable(self):
         "Menu desplegable con 3 item (Cortar, copiar y pegar)..."
-        #Se crea el menu...
+        # Se crea el menu...
         self.menu_desplegable = Menu(self, tearoff=0)
- 
-        #Se agrega el item "Cortar"...
+
+        # Se agrega el item "Cortar"...
         self.menu_desplegable.add_command(label="Cortar",
                                           font=datos.fuente,
-                                          command=lambda:funcion.menu("cortar"))
- 
-        #Se agrega el item "Copiar"...
+                                          command=lambda: funcion.menu("cortar"))
+
+        # Se agrega el item "Copiar"...
         self.menu_desplegable.add_command(label="Copiar",
                                           font=datos.fuente,
-                                          command=lambda:funcion.menu("copiar"))
- 
-        #Se agrega un separador...
+                                          command=lambda: funcion.menu("copiar"))
+
+        # Se agrega un separador...
         self.menu_desplegable.add_separator()
- 
-        #Se agrega el item "Pegar"...
+
+        # Se agrega el item "Pegar"...
         self.menu_desplegable.add_command(label="Pegar",
                                           font=datos.fuente,
-                                          command=lambda:funcion.menu("pegar"))
- 
-        #Evento del menu desplegable(lanza el menu si se presiona el clic derecho)...
-        self.texto1.bind("<Button-3>", lambda evento:self.menu_desplegable.post(evento.x_root, evento.y_root))
-        #"evento" da la posicion en donde luego se lanza el menu(.post) en las ubicaciones dadas(x_root,y_root)
- 
-class Funciones:
-    
+                                          command=lambda: funcion.menu("pegar"))
 
-    def encriptar(self,msg,modo="encriptado"):
+        # Evento del menu desplegable(lanza el menu si se presiona el clic derecho)...
+        self.texto1.bind("<Button-3>", lambda evento: self.menu_desplegable.post(evento.x_root, evento.y_root))
+        # "evento" da la posicion en donde luego se lanza el menu(.post) en las ubicaciones dadas(x_root,y_root)
+
+
+class Funciones():
+    def __init__(self):
+        self.msg = []
+
+    def encriptar(self, msg, modo="encriptado"):
         """Función general para encriptar"""
         letrasm = "abcdefghijklmñnopqrstuvwxyz"
         LETRASM = letrasm.upper()
         letras = letrasm + LETRASM
-        ticker="whale"
+        ticker = "whale"
         e = 2533
         csrmsg = enccsr(msg, ticker)
         binmsg = ""
@@ -125,7 +129,7 @@ class Funciones:
             binmsg2 += bininv(binario)
             contador += 6
         contador = 0
-        while  contador < len(binmsg2):
+        while contador < len(binmsg2):
             subcontador = 0
             num = 0
             if binmsg2[contador] == " ":
@@ -140,17 +144,17 @@ class Funciones:
                         break
                 nummsg.append(num)
         encmsg = encasm(nummsg, e)
+        encmsg.pop()
+        self.msg = encmsg
         return encmsg
 
-                        
-         
-    def desencriptar(self,msg,modo="desencriptado"):
+    def desencriptar(self, modo="desencriptado"):
         letrasm = "abcdefghijklmñnopqrstuvwxyz"
         LETRASM = letrasm.upper()
         letras = letrasm + LETRASM
-        ticker="whale" 
-        d=6285
-        nummsg = dscasm(msg, d)
+        ticker = "whale"
+        d = 6285
+        nummsg = dscasm(self.msg, d)
         binmsg = ""
         binmsg2 = ""
         precsr = ""
@@ -162,9 +166,9 @@ class Funciones:
                 numero = elemento
                 binario = ""
                 for potencia in range(6):
-                    if numero >= (2**(5 - potencia)):
+                    if numero >= (2 ** (5 - potencia)):
                         binario = "1" + binario
-                        numero -= 2**(5- potencia)
+                        numero -= 2 ** (5 - potencia)
                     else:
                         binario = "0" + binario
                 binmsg += binario
@@ -176,10 +180,10 @@ class Funciones:
                 binmsg2 += "_"
                 contador += 1
             else:
-                binmsg2 += bininv(binmsg[contador : contador + 6])
+                binmsg2 += bininv(binmsg[contador: contador + 6])
                 contador += 6
         contador = 0
-        while  contador < len(binmsg2):
+        while contador < len(binmsg2):
             subcontador = 5
             num = 0
             if binmsg2[contador] == "_":
@@ -193,79 +197,81 @@ class Funciones:
                     if contador == len(binmsg2):
                         break
                 precsr += "{0}".format(letras[num])
-                dscmsg += dsccsr(precsr, ticker)
+                dscmsg = dsccsr(precsr, ticker)
         return dscmsg
 
-    def boton1(self,modo):
-        #Se lee lo escrito...
-        mensaje = ventana.texto1.get("0.0",END)
-     
-        #Se lo lleva a encriptar...
+    def boton1(self, modo):
+        # Se lee lo escrito...
+        mensaje = ventana.texto1.get("0.0", END)
+
+        # Se lo lleva a encriptar...
         texto = self.encriptar(mensaje)
- 
-        #Se borra el texto escrito...
-        ventana.texto1.delete("0.0",END)
- 
-        #Se inserta el texto encriptado...
-        ventana.texto2.insert("0.100",texto)
- 
-        #Se cambia el mensaje del panel...
-        ventana.panel.config(text="texto "+modo)
-    def boton2(self,modo):
-        #Se lee lo escrito...
-        mensaje1 = ventana.texto2.get("0.0",END)
-     
-        #Se lo lleva a encriptar...
+
+        # Se borra el texto escrito...
+        ventana.texto1.delete("0.0", END)
+
+        # Se inserta el texto encriptado...
+        ventana.texto2.insert("0.100", texto)
+
+        # Se cambia el mensaje del panel...
+        ventana.panel.config(text="texto " + modo)
+
+    def boton2(self, modo):
+        # Se lee lo escrito...
+        mensaje1 = ventana.texto2.get("0.0", END)
+
+        # Se lo lleva a encriptar...
         texto = self.desencriptar(mensaje1)
- 
-        #Se borra el texto escrito...
-        ventana.texto2.delete("0.0",END)
- 
-        #Se inserta el texto encriptado...
-        ventana.texto1.insert("0.0",texto)
- 
-        #Se cambia el mensaje del panel...
+
+        # Se borra el texto escrito...
+        ventana.texto2.delete("0.0", END)
+
+        # Se inserta el texto encriptado...
+        ventana.texto1.insert("0.0", texto)
+
+        # Se cambia el mensaje del panel...
         ventana.panel.config(text="Ingrese texto: ")
+
     def menu(self, modo):
-        #Funciones del menu desplegable...
+        # Funciones del menu desplegable...
         if modo == "cortar":
             try:
-                #Se limpia la memoria...
+                # Se limpia la memoria...
                 ventana.texto.clipboard_clear()
-                #Se agrega a memoria lo seleccionado...
+                # Se agrega a memoria lo seleccionado...
                 ventana.texto.clipboard_append(ventana.texto.selection_get())
-                #Se borra lo seleccionado...
+                # Se borra lo seleccionado...
                 ventana.texto.delete(SEL_FIRST, SEL_LAST)
- 
+
             except:
                 print("Seleccion vacia")
- 
+
         elif modo == "copiar":
             try:
-                #Se limpia la memoria...
+                # Se limpia la memoria...
                 ventana.texto.clipboard_clear()
-                #Se agrega a memoria lo seleccionado...
+                # Se agrega a memoria lo seleccionado...
                 ventana.texto.clipboard_append(ventana.texto.selection_get())
- 
+
             except:
                 print("Seleccion vacia")
- 
+
         elif modo == "pegar":
             try:
-                #Se inserta el texto en memoria a la zona del cursor en el cuadro de texto...
-                ventana.texto.insert(INSERT,ventana.texto.selection_get(selection="CLIPBOARD"))
- 
+                # Se inserta el texto en memoria a la zona del cursor en el cuadro de texto...
+                ventana.texto.insert(INSERT, ventana.texto.selection_get(selection="CLIPBOARD"))
+
             except:
                 print("Seleccion vacia")
- 
- 
+
+
 class datos:
     "Conjunto de variables usadas por el programa..."
     fuente = ("Century Gothic", 9)
     fuente2 = ("Century Gothic", 10)
- 
- 
-if __name__=="__main__":
+
+
+if __name__ == "__main__":
     funcion = Funciones()
     ventana = GUI()
     ventana.mainloop()
