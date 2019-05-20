@@ -1,12 +1,10 @@
 from tkinter import (Tk, Text, Button, Label, Menu,
-                     END, INSERT, SEL_FIRST, SEL_LAST,Scrollbar)
-from modulo import*
+                     END, INSERT, SEL_FIRST, SEL_LAST)
+from modulo import *
+
 letrasm = "abcdefghijklmñnopqrstuvwxyz"
 LETRASM = letrasm.upper()
-digitos="áéíóúü.,-¿?!¡:;1234567890"
-letras = letrasm + LETRASM + digitos
-
-
+letras = letrasm + LETRASM
 d = 6285
 e = 2533
 ticker = "whale"
@@ -30,7 +28,6 @@ class GUI(Tk):
         # Cuadro de texto...
         self.texto1 = Text(self, font=datos.fuente2)
         self.texto1.place(x=0, y=30, width=400, height=218)
-        
 
         # Cuadro de texto2...
         self.texto2 = Text(self, font=datos.fuente2)
@@ -39,15 +36,15 @@ class GUI(Tk):
         # Panel superior...
         self.panel = Label(self,
                            text="Encriptar:",
-                           bg="grey",relief="raised",
+                           bg="gray93",
                            font=datos.fuente2)
-        self.panel.place(x=0, y=0, width=400, height=30)
+        self.panel.place(x=0, y=0, width=300, height=30)
         # Panel superior2...
         self.panel1 = Label(self,
                             text="Desencriptar",
-                            bg="grey",relief="raised",
+                            bg="gray93",
                             font=datos.fuente2)
-        self.panel1.place(x=0, y=120, width=400, height=30)
+        self.panel1.place(x=0, y=120, width=300, height=30)
 
         # Botones...
         self.botones()
@@ -60,14 +57,14 @@ class GUI(Tk):
         boton_encriptar = Button(self,
                                  text="Encriptar",
                                  font=datos.fuente2,
-                                 relief="raised",
+                                 relief="flat",
                                  command=lambda: funcion.boton1("encriptado"))
         # Se usa lambda para poder pasar argumentos...
 
         boton_descriptar = Button(self,
                                   text="Descriptar",
                                   font=datos.fuente2,
-                                  relief="groove",
+                                  relief="flat",
                                   command=lambda: funcion.boton2("descriptado"))
 
         # Se posicionan los botones...
@@ -110,9 +107,7 @@ class Funciones():
         """Función general para encriptar"""
         letrasm = "abcdefghijklmñnopqrstuvwxyz"
         LETRASM = letrasm.upper()
-        digitos="áéíóúü.,¿?!¡:;1234567890"
-        letras = letrasm + LETRASM + digitos
-    
+        letras = letrasm + LETRASM
         ticker = "whale"
         e = 2533
         csrmsg = enccsr(msg, ticker)
@@ -156,9 +151,7 @@ class Funciones():
     def desencriptar(self, modo="desencriptado"):
         letrasm = "abcdefghijklmñnopqrstuvwxyz"
         LETRASM = letrasm.upper()
-        digitos="áéíóúü.,¿?!¡:;1234567890"
-        letras = letrasm + LETRASM+ digitos
-    
+        letras = letrasm + LETRASM
         ticker = "whale"
         d = 6285
         nummsg = dscasm(self.msg, d)
@@ -282,3 +275,5 @@ if __name__ == "__main__":
     funcion = Funciones()
     ventana = GUI()
     ventana.mainloop()
+
+
